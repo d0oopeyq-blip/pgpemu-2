@@ -1,0 +1,20 @@
+name: Build PGPemu
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: espressif/idf:release-v4.4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - name: Build with IDF
+        run: |
+          . $IDF_PATH/export.sh
+          idf.py build
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pgpemu-bin
+          path: "**/build/*.bin"
