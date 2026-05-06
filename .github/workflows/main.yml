@@ -1,0 +1,20 @@
+name: Build PGPemu
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - name: esp-idf build
+        uses: espressif/idf-build-action@v2
+        with:
+          esp_idf_version: v4.4.3
+          target: esp32
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pgpemu-bin
+          path: build/*.bin
